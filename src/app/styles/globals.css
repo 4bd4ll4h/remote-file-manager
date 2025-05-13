@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input {
+    @apply w-full border rounded px-3 py-2 mt-1 text-sm focus:outline-none focus:ring focus:ring-blue-300;
+  }
+  body{
+    @apply font-mono
+  }
+  
+  @layer utilities {
+    .typewriter {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+       
+        font-family: monospace; /* or Tailwind's font-mono */
+      
+        width: 0ch;
+        animation: typewriter 6s steps(24) infinite;
+      }
+      
+      @keyframes typewriter {
+        0% {
+          width: 0ch;
+        }
+        40% {
+          width: 24ch;
+        }
+        60% {
+          width: 24ch; /* pause at full width */
+        }
+        100% {
+          width: 0ch;
+        }
+      }
+      
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
+      }
+      
+      /* optional: blinking cursor */
+      .typewriter::after {
+        content: "";
+        border-right: 2px solid #ccc;
+        animation: blink 0.75s step-end infinite;
+      }
+      
+        
+}
