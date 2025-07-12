@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
         console.log(userSessionId,":::::",serverId);
         
         const client = sshManager.getClient(userSessionId, serverId);
-        
+        console.log("SSH Client:", sshManager.count());
         if (!client) {
             return new Response("Not connected to server", { status: 400 });
         }
@@ -34,7 +34,9 @@ export async function GET(req: NextRequest) {
 
                 stream.on('data', (chunk: { toString: () => string; }) => {
                     data += chunk.toString();
+                    console.log("SSH List Output:", data);
                 });
+
 
                 stream.on('close', () => {
                     resolve(data);

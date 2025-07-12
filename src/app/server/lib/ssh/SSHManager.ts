@@ -74,6 +74,13 @@ class SSHManager{
         }
       }
       
+      count() {
+        let total = 0;
+        for (const userServers of this.sessions.values()) {
+          total += userServers.size;
+        }
+        return total;
+      }
 
 }
 

@@ -15,17 +15,21 @@ export default function Breadcrumb({
       <button onClick={() => onNavigate("/")} className="text-blue-500 hover:underline">
         /
       </button>
-      {parts.map((part, i) => (
-        <span key={i} className="flex items-center gap-1">
-          <span>/</span>
-          <button
-            onClick={() => onNavigate(fullPaths[i])}
-            className="text-blue-500 hover:underline"
-          >
-            {part}
-          </button>
-        </span>
-      ))}
+      {parts.map((part, i) => {
+        const isLast = i === parts.length - 1;
+        return (
+          <span key={fullPaths[i]} className="flex items-center gap-1">
+            <span>/</span>
+            {isLast ? (
+              <span className="font-semibold text-gray-800">{part}</span>
+            ) : (
+              <button onClick={() => onNavigate(fullPaths[i])} className="text-blue-500 hover:underline">
+                {part}
+              </button>
+            )}
+          </span>
+        );
+      })}
     </div>
   );
 }

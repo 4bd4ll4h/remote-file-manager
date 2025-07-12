@@ -7,8 +7,12 @@
   }
   body{
     @apply font-mono
+
+    bg-fuchsia-900
+    box-border;
   }
-  
+ 
+
   @layer utilities {
     .typewriter {
         display: inline-block;

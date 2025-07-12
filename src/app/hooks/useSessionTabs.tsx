@@ -47,14 +47,24 @@ export function SessionTabsProvider({ children }: { children: React.ReactNode })
   };
 
   const closeTab = (id: string) => {
-    if (id === "default" && tabs.length === 1) return; // never remove default tab
+    if (tabs.length === 1) return; // Don't close the last tab
 
-    setTabs((prev) => prev.filter((tab) => tab.id !== id));
+    const closedTabIndex = tabs.findIndex((tab) => tab.id === id);
+    if (closedTabIndex === -1) return; // Tab not found
 
+    const newTabs = tabs.filter((tab) => tab.id !== id);
+
+    // If the closed tab was the active one, determine the next active tab
     if (activeTabId === id) {
-      const fallback = tabs.find((t) => t.id !== id);
-      if (fallback) setActiveTabId(fallback.id);
+      // Select the tab that took the closed tab's place, or the new last tab.
+      const newActiveTab = newTabs[closedTabIndex] ?? newTabs[closedTabIndex - 1];
+      if (newActiveTab) {
+        setActiveTabId(newActiveTab.id);
+      }else{
+        setActiveTabId(newTabs[0].id); // Fallback to first tab if no other tabs left
+      }
     }
+    setTabs(newTabs);
   };
 
   const setActiveTab = (id: string) => {

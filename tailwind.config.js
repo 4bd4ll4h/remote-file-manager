@@ -4,9 +4,16 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: 'class',
   theme: {
-    extend: {},
+    
+    extend: {
+
+    },
+    
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar-hide'),
+    require('@tailwindcss/container-queries'),
+  ]
 }
 

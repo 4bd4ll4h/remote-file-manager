@@ -6,6 +6,7 @@ import TabContent from "./components/TabContent";
 import { SessionTabsProvider } from "./hooks/useSessionTabs";
 import type { Metadata } from 'next'
 import { Poppins } from "next/font/google"
+import { ThemeProvider } from "./hooks/useTheme";
 
 export const metadata: Metadata = {
   title: 'Remote File Manager',
@@ -24,8 +25,10 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
       <body className="min-h-screen">
         <Providers>
           <SessionTabsProvider>
+            <ThemeProvider>
               <TabBar />
               <TabContent />
+              </ThemeProvider>
           </SessionTabsProvider>
         </Providers>
       </body>
