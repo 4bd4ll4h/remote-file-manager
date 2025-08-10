@@ -5,7 +5,7 @@ export interface FileItem {
     permissions: string;
     owner: string;
     group: string;
-    date: string;     // Full ISO string
+    modified: string;     // Full ISO string
     isHidden: boolean;
   }
   

@@ -20,6 +20,13 @@ export async function GET(req: NextRequest) {
         const client = sshManager.getClient(userSessionId, serverId);
         console.log("SSH Client:", sshManager.count());
         if (!client) {
+            console.error("[LIST API] SSH client is null", {
+                userSessionId,
+                serverId,
+                timestamp: new Date().toISOString(),
+                sessionsCount: sshManager.count(),
+                debugInfo: sshManager.debug()
+            });
             return new Response("Not connected to server", { status: 400 });
         }
 

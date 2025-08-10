@@ -14,7 +14,11 @@ export function parseLsOutput(output: string): FileItem[] {
     const owner = parts[2];
     const group = parts[3];
     const size = parseInt(parts[4], 10);
-    const date = `${parts[5]} ${parts[6]} ${parts[7]}`; // Example: 2025-04-26 09:55:01.123456789
+    
+    // Parse and clean the date
+    const dateStr = `${parts[5]} ${parts[6]} ${parts[7]}`;
+    const modified = cleanAndFormatDate(dateStr);
+    
     const name = parts.slice(8).join(' ');
 
     if (!name) continue; // skip invalid entries
@@ -35,10 +39,27 @@ export function parseLsOutput(output: string): FileItem[] {
       permissions,
       owner,
       group,
-      date,
+      modified,
       isHidden,
     });
   }
 
   return files;
+}
+
+// Helper function to clean the date format
+function cleanAndFormatDate(dateStr: string): string {
+  try {
+    // Remove nanoseconds and keep only milliseconds
+    // From: "2025-03-06 09:30:38.853026488 +0000"
+    // To: "2025-03-06 09:30:38.853 +0000"
+    const cleanedDate = dateStr.replace(/(\.\d{3})\d{6}/, '$1');
+    
+    // Convert to ISO format for better JS compatibility
+    const date = new Date(cleanedDate);
+    return date.toISOString();
+  } catch (error) {
+    console.warn('Failed to parse date:', dateStr, error);
+    return new Date().toISOString(); // Fallback to current time
+  }
 }

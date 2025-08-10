@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   description: 'Manage your remote files easily',
 }
 
+// Force dynamic rendering to prevent SSR issues
+export const dynamic = 'force-dynamic';
+
 const poppins = Poppins({ subsets: ["latin"], weight: "600" })
 
 export default function RootLayout({ children }: PropsWithChildren<{}>) {
@@ -27,6 +30,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
           <SessionTabsProvider>
             <ThemeProvider>
               <TabBar />
+              
               <TabContent />
               </ThemeProvider>
           </SessionTabsProvider>

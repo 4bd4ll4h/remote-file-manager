@@ -4,10 +4,9 @@ import { getSessionId } from "@/app/server/lib/session";
 
 export async function POST(req: NextRequest) {
     try {
-        const body = await req.json();
-        const { serverId, path, isDir } = body;
+        const { serverId, sourcePath, destinationPath } = await req.json();
 
-        if (!serverId || !path) {
+        if (!serverId || !sourcePath || !destinationPath) {
             return new Response("Missing required fields", { status: 400 });
         }
 
@@ -16,7 +15,7 @@ export async function POST(req: NextRequest) {
         const client = sshManager.getClient(userSessionId, serverId);
 
         if (!client) {
-            console.error("[DELETE API] SSH client is null", {
+            console.error("[MOVE API] SSH client is null", {
                 userSessionId,
                 serverId,
                 timestamp: new Date().toISOString(),
@@ -25,10 +24,8 @@ export async function POST(req: NextRequest) {
             return new Response("SSH session not found", { status: 400 });
         }
 
-        // Determine if it's a directory based on the isDir parameter or by checking the path
-        const isDirectory = isDir !== undefined ? isDir : path.endsWith('/') || !path.includes('.');
-        
-        const cmd = isDirectory ? `rm -rf "${path}"` : `rm "${path}"`;
+        // Use mv command for moving files and directories
+        const cmd = `mv "${sourcePath}" "${destinationPath}"`;
 
         const output = await new Promise<string>((resolve, reject) => {
             client.exec(cmd, (err, stream) => {
@@ -38,20 +35,20 @@ export async function POST(req: NextRequest) {
 
                 stream
                     .on("close", (code: number) => {
-                        if (code === 0) resolve("Deleted");
-                        else reject(new Error(stderr || "Unknown error"));
+                        if (code === 0) resolve("Moved successfully");
+                        else reject(new Error(stderr || "Move operation failed"));
                     })
-                    .on("data", () => { }) // Ignore stdout for delete
+                    .on("data", () => { }) // Ignore stdout for move
                     .stderr.on("data", (chunk) => {
                         stderr += chunk.toString();
                     });
             });
         });
 
-        return Response.json({ message: "Deleted successfully" }, { status: 200 });
+        return Response.json({ message: "Moved successfully" }, { status: 200 });
 
     } catch (error: any) {
-        console.error("[Delete Error]:", error);
-        return new Response(`Delete failed: ${error.message}`, { status: 500 });
+        console.error("[Move Error]:", error);
+        return new Response(`Move failed: ${error.message}`, { status: 500 });
     }
-}
+} 
