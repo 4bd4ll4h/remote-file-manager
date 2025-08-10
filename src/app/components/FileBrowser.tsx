@@ -316,11 +316,11 @@ export default function FileBrowser({ sessionId }: { sessionId: string }) {
                     {/* Bulk Operations Toolbar */}
                     <BulkOperationsToolbar
                         selectedFiles={fileSelection.getSelectedFiles(processedFiles)}
-                        onBulkDelete={handleBulkDelete}
-                        onBulkCopy={handleBulkCopy}
-                        onBulkMove={handleBulkMove}
-                        onBulkDownload={handleBulkDownload}
-                        onPaste={handlePaste}
+                        onBulkDeleteAction={handleBulkDelete}
+                        onBulkCopyAction={handleBulkCopy}
+                        onBulkMoveAction={handleBulkMove}
+                        onBulkDownloadAction={handleBulkDownload}
+                        onPasteAction={handlePaste}
                         hasClipboardItems={clipboard.hasClipboardItems}
                         clipboardSummary={clipboard.getClipboardSummary()}
                         isAnyOperationPending={isAnyOperationPending}
@@ -328,7 +328,7 @@ export default function FileBrowser({ sessionId }: { sessionId: string }) {
                         isCopyPending={fileOps.copy.isPending}
                         isMovePending={fileOps.move.isPending}
                         isDownloadPending={fileOps.bulkDownload.isPending}
-                        onCancel={() => {
+                        onCancelAction={() => {
                             clipboard.clearClipboard();
                             fileSelection.deselectAll();
                         }}

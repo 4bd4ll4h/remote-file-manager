@@ -6,11 +6,11 @@ import { FileItem } from "@/app/hooks/useFileListProcessing";
 
 interface BulkOperationsToolbarProps {
   selectedFiles: FileItem[];
-  onBulkDelete: () => void;
-  onBulkCopy: () => void;
-  onBulkMove: () => void;
-  onBulkDownload: () => void;
-  onPaste: () => void;
+  onBulkDeleteAction: () => void;
+  onBulkCopyAction: () => void;
+  onBulkMoveAction: () => void;
+  onBulkDownloadAction: () => void;
+  onPasteAction: () => void;
   hasClipboardItems: boolean;
   clipboardSummary: string;
   isAnyOperationPending: boolean;
@@ -18,16 +18,16 @@ interface BulkOperationsToolbarProps {
   isCopyPending: boolean;
   isMovePending: boolean;
   isDownloadPending: boolean;
-  onCancel: () => void;
+  onCancelAction: () => void;
 }
 
 export default function BulkOperationsToolbar({
   selectedFiles,
-  onBulkDelete,
-  onBulkCopy,
-  onBulkMove,
-  onBulkDownload,
-  onPaste,
+  onBulkDeleteAction,
+  onBulkCopyAction,
+  onBulkMoveAction,
+  onBulkDownloadAction,
+  onPasteAction,
   hasClipboardItems,
   clipboardSummary,
   isAnyOperationPending,
@@ -35,7 +35,7 @@ export default function BulkOperationsToolbar({
   isCopyPending,
   isMovePending,
   isDownloadPending,
-  onCancel
+  onCancelAction
 }: BulkOperationsToolbarProps) {
   const selectedCount = selectedFiles.length;
   const fileCount = selectedFiles.filter(f => f.type === "file").length;
@@ -68,7 +68,7 @@ export default function BulkOperationsToolbar({
               <Button
                 variant="glass"
                 size="sm"
-                onClick={onBulkDownload}
+                onClick={onBulkDownloadAction}
                 disabled={isAnyOperationPending}
                 icon={isDownloadPending ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} />}
                 >
@@ -78,7 +78,7 @@ export default function BulkOperationsToolbar({
             <Button
               variant="glass"
               size="sm"
-              onClick={onBulkCopy}
+              onClick={onBulkCopyAction}
               disabled={isAnyOperationPending}
               icon={isCopyPending ? <Loader2 size={14} className="animate-spin" /> : <Copy size={14} />}
             >
@@ -88,7 +88,7 @@ export default function BulkOperationsToolbar({
             <Button
               variant="glass"
               size="sm"
-              onClick={onBulkMove}
+              onClick={onBulkMoveAction}
               disabled={isAnyOperationPending}
               icon={isMovePending ? <Loader2 size={14} className="animate-spin" /> : <Scissors size={14} />}
             >
@@ -98,7 +98,7 @@ export default function BulkOperationsToolbar({
             <Button
               variant="glass"
               size="sm"
-              onClick={onBulkDelete}
+              onClick={onBulkDeleteAction}
               disabled={isAnyOperationPending}
               icon={isDeletePending ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
               className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
@@ -118,7 +118,7 @@ export default function BulkOperationsToolbar({
           <Button
             variant="glass"
             size="sm"
-            onClick={onPaste}
+            onClick={onPasteAction}
             disabled={isAnyOperationPending}
             icon={isCopyPending || isMovePending ? <Loader2 size={14} className="animate-spin" /> : <Copy size={14} />}
           >
@@ -127,7 +127,7 @@ export default function BulkOperationsToolbar({
           <Button
             variant="glass"
             size="sm"
-            onClick={onCancel}
+            onClick={onCancelAction}
             disabled={isAnyOperationPending}
             icon={<X size={14} />}
           >
